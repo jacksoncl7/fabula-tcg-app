@@ -1,58 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
 
-/// Design tokens and theme configuration for the Fábula TCG app.
-///
-/// Colors are mapped from the official Fábula TCG base/card identity colors.
+/// Design tokens and theme configuration for Fábula TCG Companion App.
 abstract final class AppTheme {
-  // ---------------------------------------------------------------------------
-  // Official Fábula TCG color palette
-  // ---------------------------------------------------------------------------
+  // Re-export color aliases for backward compatibility
+  static const Color fabulaWhite = FabulaColors.white;
+  static const Color fabulaBlue = FabulaColors.blue;
+  static const Color fabulaYellow = FabulaColors.yellow;
+  static const Color fabulaGreen = FabulaColors.green;
+  static const Color fabulaRed = FabulaColors.red;
+  static const Color fabulaPurple = FabulaColors.purple;
+  static const Color fabulaColorless = FabulaColors.colorless;
 
-  /// White — primary buttons, neutral markers, active selection borders.
-  static const Color fabulaWhite = Color(0xFFF5F5F5);
-
-  /// Blue — turn phase indicators, stat headers, navigation selections.
-  static const Color fabulaBlue = Color(0xFF1565C0);
-
-  /// Yellow — resource counter highlight, turn priority markers.
-  static const Color fabulaYellow = Color(0xFFFBC02D);
-
-  /// Green — life indicators, restoration markers, ally health.
-  static const Color fabulaGreen = Color(0xFF388E3C);
-
-  /// Red — damage buttons, destruction, offensive sub-phase alerts.
-  static const Color fabulaRed = Color(0xFFD32F2F);
-
-  /// Purple — influence sub-phase markers, control change, special states.
-  static const Color fabulaPurple = Color(0xFF7B1FA2);
-
-  /// Colorless — neutral backgrounds, dividers, disabled cards.
-  static const Color fabulaColorless = Color(0xFF9E9E9E);
-
-  // ---------------------------------------------------------------------------
-  // Theme data
-  // ---------------------------------------------------------------------------
-
-  /// Light theme for the application.
+  /// Standard Light Theme
   static ThemeData get light => ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        colorSchemeSeed: fabulaBlue,
-        scaffoldBackgroundColor: const Color(0xFFFAFAFA),
+        colorSchemeSeed: FabulaColors.blue,
+        scaffoldBackgroundColor: FabulaColors.surfaceLight,
+        textTheme: const TextTheme(
+          displayLarge: FabulaTypography.displayScore,
+          headlineMedium: FabulaTypography.headlineCounter,
+          titleMedium: FabulaTypography.phaseLabel,
+          labelLarge: FabulaTypography.actionButton,
+        ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,
           elevation: 0,
+          backgroundColor: Colors.transparent,
         ),
       );
 
-  /// Dark theme for the application.
+  /// Standard Dark Theme
   static ThemeData get dark => ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        colorSchemeSeed: fabulaBlue,
+        colorSchemeSeed: FabulaColors.blue,
+        scaffoldBackgroundColor: FabulaColors.surfaceDark,
+        textTheme: const TextTheme(
+          displayLarge: FabulaTypography.displayScore,
+          headlineMedium: FabulaTypography.headlineCounter,
+          titleMedium: FabulaTypography.phaseLabel,
+          labelLarge: FabulaTypography.actionButton,
+        ),
         appBarTheme: const AppBarTheme(
           centerTitle: true,
           elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+      );
+
+  /// High-Contrast Table Theme (optimized for tournaments and distant viewing)
+  static ThemeData get highContrast => ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: Colors.black,
+        colorScheme: const ColorScheme.dark(
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          secondary: FabulaColors.yellow,
+          surface: Color(0xFF1E1E1E),
+          onSurface: Colors.white,
+        ),
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 64,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            color: FabulaColors.yellow,
+          ),
         ),
       );
 }
