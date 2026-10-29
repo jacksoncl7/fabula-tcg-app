@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:fabula_tcg_app/presentation/components/counter_button.dart';
 import 'package:fabula_tcg_app/presentation/components/rotatable_player_zone.dart';
 import 'package:fabula_tcg_app/presentation/components/territory_badge.dart';
@@ -19,11 +20,11 @@ void main() {
       );
 
       expect(find.text('Normal View'), findsOneWidget);
-      final transformFinder = find.byType(Transform);
-      expect(transformFinder, findsNothing);
+      expect(find.byType(RotatedBox), findsNothing);
     });
 
-    testWidgets('wraps child in Transform when isRotated is true', (tester) async {
+    testWidgets('wraps child in RotatedBox when isRotated is true',
+        (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -36,7 +37,10 @@ void main() {
       );
 
       expect(find.text('Opponent View'), findsOneWidget);
-      expect(find.byType(Transform), findsOneWidget);
+      final rotatedBoxFinder = find.byType(RotatedBox);
+      expect(rotatedBoxFinder, findsOneWidget);
+      final rotatedBox = tester.widget<RotatedBox>(rotatedBoxFinder);
+      expect(rotatedBox.quarterTurns, 2);
     });
   });
 
@@ -65,7 +69,8 @@ void main() {
   });
 
   group('IncrementDecrementPill', () {
-    testWidgets('triggers increment and decrement independently', (tester) async {
+    testWidgets('triggers increment and decrement independently',
+        (tester) async {
       var incrementCount = 0;
       var decrementCount = 0;
 

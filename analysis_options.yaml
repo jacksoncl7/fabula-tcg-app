@@ -1,16 +1,21 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  strong-mode:
-    implicit-casts: false
-    implicit-dynamic: false
   errors:
     missing_return: error
     missing_required_param: error
     invalid_annotation_target: ignore
+    dangling_library_doc_comments: ignore
   exclude:
     - '**/*.g.dart'
     - '**/*.freezed.dart'
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 linter:
   rules:
@@ -21,7 +26,6 @@ linter:
     - avoid_empty_else
     - avoid_print
     - avoid_relative_lib_imports
-    - avoid_returning_null_for_future
     - avoid_slow_async_io
     - avoid_type_to_string
     - avoid_types_as_parameter_names
@@ -29,7 +33,6 @@ linter:
     - cancel_subscriptions
     - close_sinks
     - constant_identifier_names
-    - directives_ordering
     - empty_catches
     - empty_statements
     - flutter_style_todos
@@ -49,7 +52,6 @@ linter:
     - prefer_is_empty
     - prefer_is_not_empty
     - prefer_single_quotes
-    - require_trailing_commas
     - sized_box_for_whitespace
     - sort_child_properties_last
     - type_init_formals

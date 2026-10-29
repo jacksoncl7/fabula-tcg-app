@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 /// Rotates its child by 180 degrees if [isRotated] is true.
@@ -21,8 +20,8 @@ class RotatablePlayerZone extends StatelessWidget {
       return child;
     }
 
-    return Transform.rotate(
-      angle: math.pi,
+    return RotatedBox(
+      quarterTurns: 2,
       child: child,
     );
   }

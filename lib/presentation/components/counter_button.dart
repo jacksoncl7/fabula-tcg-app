@@ -55,7 +55,7 @@ class CounterButton extends StatelessWidget {
     );
 
     if (tooltip != null) {
-      return Tooltip(message: tooltip!, child: button);
+      return Tooltip(message: tooltip, child: button);
     }
     return button;
   }
@@ -80,9 +80,9 @@ class IncrementDecrementPill extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
+        color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -99,7 +99,7 @@ class IncrementDecrementPill extends StatelessWidget {
           Container(
             width: 1,
             height: 24,
-            color: color.withOpacity(0.2),
+            color: color.withValues(alpha: 0.2),
           ),
           IconButton(
             icon: const Icon(Icons.add),

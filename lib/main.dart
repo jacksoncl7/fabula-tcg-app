@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
+
 import 'package:fabula_tcg_app/core/theme/app_theme.dart';
 import 'package:fabula_tcg_app/presentation/screens/home_screen.dart';
 import 'package:fabula_tcg_app/presentation/state/ergonomics_provider.dart';
@@ -45,10 +46,26 @@ class FabulaTcgApp extends ConsumerWidget {
     if (ergonomics.displayMode == AccessibilityDisplayMode.grayscale) {
       appChild = ColorFiltered(
         colorFilter: const ColorFilter.matrix(<double>[
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0.2126, 0.7152, 0.0722, 0, 0,
-          0,      0,      0,      1, 0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0.2126,
+          0.7152,
+          0.0722,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
         ]),
         child: appChild,
       );

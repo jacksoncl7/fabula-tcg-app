@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
 
@@ -23,7 +24,8 @@ class TerritoryBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final effectiveColor = badgeColor ?? (isCenter ? FabulaColors.yellow : FabulaColors.blue);
+    final effectiveColor =
+        badgeColor ?? (isCenter ? FabulaColors.yellow : FabulaColors.blue);
 
     return InkWell(
       onTap: onTap,
@@ -31,7 +33,7 @@ class TerritoryBadge extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
-          color: effectiveColor.withOpacity(0.12),
+          color: effectiveColor.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isExposed ? FabulaColors.red : effectiveColor,
@@ -47,12 +49,14 @@ class TerritoryBadge extends StatelessWidget {
                 if (isCenter && !isExposed)
                   const Padding(
                     padding: EdgeInsets.only(right: 4),
-                    child: Icon(Icons.shield, size: 16, color: FabulaColors.yellow),
+                    child: Icon(Icons.shield,
+                        size: 16, color: FabulaColors.yellow),
                   ),
                 if (isExposed)
                   const Padding(
                     padding: EdgeInsets.only(right: 4),
-                    child: Icon(Icons.warning_amber_rounded, size: 16, color: FabulaColors.red),
+                    child: Icon(Icons.warning_amber_rounded,
+                        size: 16, color: FabulaColors.red),
                   ),
                 Text(
                   title.toUpperCase(),
@@ -102,19 +106,19 @@ class PhaseChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? color : color.withOpacity(0.08),
+          color: isActive ? color : color.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isActive ? color : color.withOpacity(0.25),
+            color: isActive ? color : color.withValues(alpha: 0.25),
             width: isActive ? 2 : 1,
           ),
           boxShadow: isActive
               ? [
                   BoxShadow(
-                    color: color.withOpacity(0.35),
+                    color: color.withValues(alpha: 0.35),
                     blurRadius: 8,
                     offset: const Offset(0, 2),
-                  )
+                  ),
                 ]
               : null,
         ),

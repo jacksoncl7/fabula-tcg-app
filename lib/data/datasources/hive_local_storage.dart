@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:fabula_tcg_app/domain/repositories/local_storage_repository.dart';
+
 import 'package:fabula_tcg_app/core/errors/exceptions.dart';
+import 'package:fabula_tcg_app/domain/repositories/local_storage_repository.dart';
 
 /// Hive-based implementation of [LocalStorageRepository].
 ///

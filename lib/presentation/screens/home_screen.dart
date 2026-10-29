@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
 import 'package:fabula_tcg_app/presentation/components/counter_button.dart';
 import 'package:fabula_tcg_app/presentation/components/rotatable_player_zone.dart';
-import 'package:fabula_tcg_app/presentation/components/territory_badge.dart';
 import 'package:fabula_tcg_app/presentation/state/ergonomics_provider.dart';
 import 'package:fabula_tcg_app/presentation/state/providers.dart';
 
@@ -31,14 +31,21 @@ class HomeScreen extends ConsumerWidget {
                   currentResources: p2.currentResources,
                   maxResources: p2.maxResources,
                   accentColor: FabulaColors.red,
-                  onIncrement: () => ref.read(player2ResourceProvider.notifier).gainBonusResources(1),
+                  onIncrement: () => ref
+                      .read(player2ResourceProvider.notifier)
+                      .gainBonusResources(1),
                   onDecrement: () {
                     if (p2.currentResources > 0) {
-                      ref.read(player2ResourceProvider.notifier).spendResources(1);
+                      ref
+                          .read(player2ResourceProvider.notifier)
+                          .spendResources(1);
                     }
                   },
-                  onNextTurn: () => ref.read(player2ResourceProvider.notifier).advanceToNextTurn(),
-                  onRestore: () => ref.read(player2ResourceProvider.notifier).restore(),
+                  onNextTurn: () => ref
+                      .read(player2ResourceProvider.notifier)
+                      .advanceToNextTurn(),
+                  onRestore: () =>
+                      ref.read(player2ResourceProvider.notifier).restore(),
                   isStreamMode: ergonomics.isStreamModeActive,
                 ),
               ),
@@ -47,26 +54,38 @@ class HomeScreen extends ConsumerWidget {
             // Middle Toolbar: Stream Mode, Settings, and Accessibility controls
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.4),
+              color: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withValues(alpha: 0.4),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
                     icon: Icon(
-                      ergonomics.isStreamModeActive ? Icons.videocam : Icons.videocam_off_outlined,
-                      color: ergonomics.isStreamModeActive ? FabulaColors.green : null,
+                      ergonomics.isStreamModeActive
+                          ? Icons.videocam
+                          : Icons.videocam_off_outlined,
+                      color: ergonomics.isStreamModeActive
+                          ? FabulaColors.green
+                          : null,
                     ),
                     tooltip: 'Modo Stream / Webcam',
-                    onPressed: () => ref.read(ergonomicsProvider.notifier).toggleStreamMode(),
+                    onPressed: () => ref
+                        .read(ergonomicsProvider.notifier)
+                        .toggleStreamMode(),
                   ),
                   Text(
                     'FÁBULA TCG ASSISTANT',
-                    style: FabulaTypography.caption.copyWith(fontWeight: FontWeight.bold),
+                    style: FabulaTypography.caption
+                        .copyWith(fontWeight: FontWeight.bold),
                   ),
                   PopupMenuButton<AccessibilityDisplayMode>(
                     icon: const Icon(Icons.accessibility_new),
                     tooltip: 'Acessibilidade de Mesa',
-                    onSelected: (mode) => ref.read(ergonomicsProvider.notifier).setDisplayMode(mode),
+                    onSelected: (mode) => ref
+                        .read(ergonomicsProvider.notifier)
+                        .setDisplayMode(mode),
                     itemBuilder: (context) => [
                       const PopupMenuItem(
                         value: AccessibilityDisplayMode.standard,
@@ -95,14 +114,21 @@ class HomeScreen extends ConsumerWidget {
                   currentResources: p1.currentResources,
                   maxResources: p1.maxResources,
                   accentColor: FabulaColors.blue,
-                  onIncrement: () => ref.read(player1ResourceProvider.notifier).gainBonusResources(1),
+                  onIncrement: () => ref
+                      .read(player1ResourceProvider.notifier)
+                      .gainBonusResources(1),
                   onDecrement: () {
                     if (p1.currentResources > 0) {
-                      ref.read(player1ResourceProvider.notifier).spendResources(1);
+                      ref
+                          .read(player1ResourceProvider.notifier)
+                          .spendResources(1);
                     }
                   },
-                  onNextTurn: () => ref.read(player1ResourceProvider.notifier).advanceToNextTurn(),
-                  onRestore: () => ref.read(player1ResourceProvider.notifier).restore(),
+                  onNextTurn: () => ref
+                      .read(player1ResourceProvider.notifier)
+                      .advanceToNextTurn(),
+                  onRestore: () =>
+                      ref.read(player1ResourceProvider.notifier).restore(),
                   isStreamMode: ergonomics.isStreamModeActive,
                 ),
               ),
@@ -165,7 +191,10 @@ class _PlayerDashboard extends StatelessWidget {
               Text(
                 ' / $maxResources',
                 style: FabulaTypography.headlineCounter.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6),
                 ),
               ),
             ],
@@ -189,7 +218,8 @@ class _PlayerDashboard extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: FabulaColors.green,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 ),
               ),
               const SizedBox(width: 12),
@@ -198,7 +228,8 @@ class _PlayerDashboard extends StatelessWidget {
                 icon: const Icon(Icons.arrow_forward, size: 18),
                 label: const Text('Próx. Turno'),
                 style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 ),
               ),
               const SizedBox(width: 24),

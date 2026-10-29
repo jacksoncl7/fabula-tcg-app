@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:fabula_tcg_app/core/utils/player_id.dart';
 import 'package:fabula_tcg_app/domain/entities/resource_state.dart';
 import 'package:fabula_tcg_app/domain/rules/resource_rules.dart';
