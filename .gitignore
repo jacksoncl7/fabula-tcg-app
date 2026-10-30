@@ -72,3 +72,9 @@ migrate_working_dir/
 # Coverage & testing
 coverage/
 *.lcov
+
+# Desktop and Web platforms (Mobile-only companion app)
+linux/
+macos/
+web/
+windows/
