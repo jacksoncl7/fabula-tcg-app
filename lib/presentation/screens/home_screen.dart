@@ -1,12 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:fabula_tcg_app/core/errors/exceptions.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
+import 'package:fabula_tcg_app/domain/entities/territory_state.dart';
 import 'package:fabula_tcg_app/presentation/components/counter_button.dart';
 import 'package:fabula_tcg_app/presentation/components/rotatable_player_zone.dart';
+import 'package:fabula_tcg_app/presentation/components/territory_zone_widget.dart';
 import 'package:fabula_tcg_app/presentation/state/ergonomics_provider.dart';
 import 'package:fabula_tcg_app/presentation/state/providers.dart';
+
+/// Shows a [SnackBar] on [GameRuleException]s.
+void _safeDo(BuildContext context, void Function() action) {
+  try {
+    action();
+  } on GameRuleException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(e.message),
+        backgroundColor: FabulaColors.red,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+}
 
 /// Interactive Tabletop Playmat Screen.
 class HomeScreen extends ConsumerWidget {
@@ -16,6 +34,8 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final p1 = ref.watch(player1ResourceProvider);
     final p2 = ref.watch(player2ResourceProvider);
+    final t1 = ref.watch(player1TerritoryProvider);
+    final t2 = ref.watch(player2TerritoryProvider);
     final ergonomics = ref.watch(ergonomicsProvider);
 
     return Scaffold(
@@ -47,6 +67,24 @@ class HomeScreen extends ConsumerWidget {
                   onRestore: () =>
                       ref.read(player2ResourceProvider.notifier).restore(),
                   isStreamMode: ergonomics.isStreamModeActive,
+                  territory: t2,
+                  onApplyDamage: (baseId, dmg) => _safeDo(
+                    context,
+                    () => ref
+                        .read(player2TerritoryProvider.notifier)
+                        .applyDamage(baseId, dmg),
+                  ),
+                  onResolveInfluence: (baseId, atk, blk) => _safeDo(
+                    context,
+                    () => ref
+                        .read(player2TerritoryProvider.notifier)
+                        .resolveInfluenceContest(
+                          baseId: baseId,
+                          attackerInfluence: atk,
+                          blockerInfluence: blk,
+                          conqueror: p1.playerId,
+                        ),
+                  ),
                 ),
               ),
             ),
@@ -130,6 +168,24 @@ class HomeScreen extends ConsumerWidget {
                   onRestore: () =>
                       ref.read(player1ResourceProvider.notifier).restore(),
                   isStreamMode: ergonomics.isStreamModeActive,
+                  territory: t1,
+                  onApplyDamage: (baseId, dmg) => _safeDo(
+                    context,
+                    () => ref
+                        .read(player1TerritoryProvider.notifier)
+                        .applyDamage(baseId, dmg),
+                  ),
+                  onResolveInfluence: (baseId, atk, blk) => _safeDo(
+                    context,
+                    () => ref
+                        .read(player1TerritoryProvider.notifier)
+                        .resolveInfluenceContest(
+                          baseId: baseId,
+                          attackerInfluence: atk,
+                          blockerInfluence: blk,
+                          conqueror: p2.playerId,
+                        ),
+                  ),
                 ),
               ),
             ),
@@ -151,6 +207,9 @@ class _PlayerDashboard extends StatelessWidget {
     required this.onNextTurn,
     required this.onRestore,
     required this.isStreamMode,
+    required this.territory,
+    required this.onApplyDamage,
+    required this.onResolveInfluence,
   });
 
   final String title;
@@ -162,86 +221,102 @@ class _PlayerDashboard extends StatelessWidget {
   final VoidCallback onNextTurn;
   final VoidCallback onRestore;
   final bool isStreamMode;
+  final TerritoryState territory;
+  final void Function(String baseId, int damage) onApplyDamage;
+  final void Function(String baseId, int atk, int blk) onResolveInfluence;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          if (!isStreamMode)
-            Text(
-              title,
-              style: FabulaTypography.phaseLabel.copyWith(color: accentColor),
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            if (!isStreamMode)
+              Text(
+                title,
+                style: FabulaTypography.phaseLabel.copyWith(color: accentColor),
+              ),
+
+            // Central Resource Counter (large for table visibility)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  '$currentResources',
+                  style: FabulaTypography.displayScore.copyWith(
+                    color: FabulaColors.yellow,
+                  ),
+                ),
+                Text(
+                  ' / $maxResources',
+                  style: FabulaTypography.headlineCounter.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
+                  ),
+                ),
+              ],
             ),
 
-          // Central Resource Counter (large for table visibility)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(
-                '$currentResources',
-                style: FabulaTypography.displayScore.copyWith(
-                  color: FabulaColors.yellow,
+            // Resource controls
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CounterButton(
+                  icon: Icons.remove,
+                  onPressed: onDecrement,
+                  size: 52,
+                  tooltip: 'Gastar 1 Recurso',
                 ),
-              ),
-              Text(
-                ' / $maxResources',
-                style: FabulaTypography.headlineCounter.copyWith(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface
-                      .withValues(alpha: 0.6),
+                const SizedBox(width: 24),
+                ElevatedButton.icon(
+                  onPressed: onRestore,
+                  icon: const Icon(Icons.refresh, size: 18),
+                  label: const Text('Restaurar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: FabulaColors.green,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                  ),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: 12),
+                OutlinedButton.icon(
+                  onPressed: onNextTurn,
+                  icon: const Icon(Icons.arrow_forward, size: 18),
+                  label: const Text('Próx. Turno'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 12),
+                  ),
+                ),
+                const SizedBox(width: 24),
+                CounterButton(
+                  icon: Icons.add,
+                  onPressed: onIncrement,
+                  size: 52,
+                  tooltip: 'Adicionar Bônus',
+                ),
+              ],
+            ),
 
-          // Controls
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CounterButton(
-                icon: Icons.remove,
-                onPressed: onDecrement,
-                size: 52,
-                tooltip: 'Gastar 1 Recurso',
+            const SizedBox(height: 8),
+
+            // Territory zone
+            if (!isStreamMode)
+              TerritoryZoneWidget(
+                territory: territory,
+                onApplyDamage: onApplyDamage,
+                onResolveInfluence: onResolveInfluence,
+                isStreamMode: isStreamMode,
               ),
-              const SizedBox(width: 24),
-              ElevatedButton.icon(
-                onPressed: onRestore,
-                icon: const Icon(Icons.refresh, size: 18),
-                label: const Text('Restaurar'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: FabulaColors.green,
-                  foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
-              ),
-              const SizedBox(width: 12),
-              OutlinedButton.icon(
-                onPressed: onNextTurn,
-                icon: const Icon(Icons.arrow_forward, size: 18),
-                label: const Text('Próx. Turno'),
-                style: OutlinedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                ),
-              ),
-              const SizedBox(width: 24),
-              CounterButton(
-                icon: Icons.add,
-                onPressed: onIncrement,
-                size: 52,
-                tooltip: 'Adicionar Bônus',
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
