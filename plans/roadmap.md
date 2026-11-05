@@ -128,15 +128,9 @@ Centro	1	15 pontos	Destruição via dano de Ofensiva (\le 0 de resistência) ou 
 * Rastreador visual interativo do fluxo das 5 fases do turno com assistente de Mulligan e descarte de fim de turno.
 * Interface ergonômica com auto-ocultamento, suporte a múltiplos layouts de mesa, cronômetro de rodada e operação 100% offline.
 
-5.2. Fase 2: Módulo de Regras Integrado e Consulta de Cartas
+5.2. Fase 2: Módulo de Regras Integrado
 
 * Integração de biblioteca de regras offline contendo a íntegra do Manual e do Livro de Regras Oficial de Fábula TCG.
 * Mecanismo de busca e leitor/scanner simples de cartas para consulta offline de Oracle text, custos, cores e categorização por tipos (Aliado, Manobra, Base, Modificação e Fichas).
 * Guia interativo sobre a Resolução da Pilha de Efeitos (LIFO), Regra de Ouro, Regra de Negação e zonas de jogo (Baralho, Mão, Campo, Descarte, Pilha e Degredo).
-
-5.3. Fase 3: Histórico de Partidas, Estatísticas e Suporte Multi-Formato
-
-* Registro local de histórico de partidas salvas no dispositivo sem necessidade de cadastro de conta (login opcional).
-* Classificação e auditoria do tipo de vitória: vitória por Captura do Centro (destruição/influência da capital oponente) ou vitória por Esgotamento de Baralho (quando o oponente não consegue comprar carta de seu baralho na Fase de Compra, Regra 1.5.3a).
-* Painel de estatísticas avançadas contendo métricas de desempenho, taxa de vitórias por identidade de cor das bases, tempo médio de turno e registro de salt rating.
 
