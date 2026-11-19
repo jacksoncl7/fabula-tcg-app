@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_tokens.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
+import 'package:fabula_tcg_app/core/theme/widgets/fabula_card.dart';
+import 'package:fabula_tcg_app/core/theme/widgets/fabula_glow_container.dart';
 import 'package:fabula_tcg_app/domain/entities/base_state.dart';
 import 'package:fabula_tcg_app/domain/entities/territory_state.dart';
 
@@ -48,20 +51,20 @@ class TerritoryZoneWidget extends StatelessWidget {
           if (isLost)
             const _StatusBanner(
               label: '💀 CENTRO PERDIDO',
-              color: FabulaColors.red,
+              color: FabulaColors.error,
             )
           else if (isExposed)
             const _StatusBanner(
               label: '⚠️ CENTRO EXPOSTO!',
-              color: FabulaColors.yellow,
+              color: FabulaColors.warning,
             ),
         ],
 
         // --- Surroundings row ---
         Wrap(
           alignment: WrapAlignment.center,
-          spacing: 8,
-          runSpacing: 8,
+          spacing: FabulaTokens.space8,
+          runSpacing: FabulaTokens.space8,
           children: surroundings
               .map(
                 (b) => _BaseTile(
@@ -74,7 +77,7 @@ class TerritoryZoneWidget extends StatelessWidget {
               .toList(),
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: FabulaTokens.space8),
 
         // --- Center tile ---
         _BaseTile(
@@ -99,19 +102,26 @@ class _StatusBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-      margin: const EdgeInsets.only(bottom: 6),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.15),
-        border: Border.all(color: color),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: FabulaTypography.phaseLabel.copyWith(color: color),
+    return FabulaGlowContainer(
+      glowColor: color,
+      intensity: 0.25,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          vertical: FabulaTokens.space4,
+          horizontal: FabulaTokens.space8,
+        ),
+        margin: const EdgeInsets.only(bottom: FabulaTokens.space8),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.15),
+          border: Border.all(color: color, width: 1.5),
+          borderRadius: BorderRadius.circular(FabulaTokens.radiusSm),
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: FabulaTypography.phaseLabel.copyWith(color: color),
+        ),
       ),
     );
   }
@@ -141,7 +151,7 @@ class _BaseTile extends StatelessWidget {
       !base.isDestroyed && base.currentController != base.originalOwner;
 
   Color get _accentColor {
-    if (base.isDestroyed) return Colors.grey;
+    if (base.isDestroyed) return FabulaColors.colorless;
     if (_isCaptured) return FabulaColors.purple;
     if (_isCenter) return FabulaColors.yellow;
     return FabulaColors.blue;
@@ -151,83 +161,84 @@ class _BaseTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Opacity(
       opacity: base.isDestroyed ? 0.4 : 1.0,
-      child: Container(
-        width: _isCenter ? 160 : 72,
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: _accentColor,
-            width: _isCenter ? 2.5 : 1.5,
-          ),
-          borderRadius: BorderRadius.circular(8),
-          color: _accentColor.withValues(alpha: 0.08),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Label + status icons
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (_isCenter)
-                  Icon(
-                    isLocked ? Icons.shield : Icons.shield_outlined,
-                    size: 14,
-                    color: isLocked ? FabulaColors.green : FabulaColors.red,
-                  ),
-                if (_isCenter) const SizedBox(width: 4),
-                Flexible(
-                  child: Text(
-                    _isCenter ? 'CENTRO' : 'ARR',
-                    style: FabulaTypography.caption.copyWith(
-                      color: _accentColor,
-                      fontWeight: FontWeight.bold,
+      child: FabulaCard(
+        padding: const EdgeInsets.all(FabulaTokens.space8),
+        borderRadius: BorderRadius.circular(FabulaTokens.radiusSm),
+        borderColor: _accentColor,
+        borderWidth: _isCenter ? 2.0 : 1.2,
+        glowColor: base.isDestroyed ? null : _accentColor,
+        child: SizedBox(
+          width: _isCenter
+              ? FabulaTokens.centerTileWidth
+              : FabulaTokens.baseTileWidth,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Label + status icons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (_isCenter)
+                    Icon(
+                      isLocked ? Icons.shield : Icons.shield_outlined,
+                      size: 14,
+                      color: isLocked ? FabulaColors.green : FabulaColors.error,
                     ),
-                    overflow: TextOverflow.ellipsis,
+                  if (_isCenter) const SizedBox(width: FabulaTokens.space4),
+                  Flexible(
+                    child: Text(
+                      _isCenter ? 'CENTRO' : 'ARR',
+                      style: FabulaTypography.caption.copyWith(
+                        color: _accentColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                if (_isCaptured) ...[
-                  const SizedBox(width: 4),
-                  const Icon(Icons.flag, size: 11, color: FabulaColors.purple),
+                  if (_isCaptured) ...[
+                    const SizedBox(width: FabulaTokens.space4),
+                    const Icon(Icons.flag,
+                        size: 11, color: FabulaColors.purple),
+                  ],
                 ],
+              ),
+
+              const SizedBox(height: FabulaTokens.space2),
+
+              // Resistance counter (large for table visibility)
+              Text(
+                base.isDestroyed ? '✕' : '${base.currentResistance}',
+                style: (_isCenter
+                        ? FabulaTypography.headlineCounter
+                        : FabulaTypography.displayScore.copyWith(fontSize: 28))
+                    .copyWith(color: _accentColor),
+              ),
+
+              Text(
+                '/ ${base.maxResistance}',
+                style: FabulaTypography.caption.copyWith(
+                  color: _accentColor.withValues(alpha: 0.6),
+                ),
+              ),
+
+              const SizedBox(height: FabulaTokens.space4),
+
+              // Action buttons (hidden when destroyed or locked)
+              if (!base.isDestroyed && !isLocked) ...[
+                _ActionBar(
+                  isCenter: _isCenter,
+                  onDamage: onDamage,
+                  onInfluence: onInfluence,
+                ),
+              ] else if (isLocked && !base.isDestroyed) ...[
+                Icon(
+                  Icons.lock_outline,
+                  size: 14,
+                  color: FabulaColors.green.withValues(alpha: 0.7),
+                ),
               ],
-            ),
-
-            const SizedBox(height: 2),
-
-            // Resistance counter (large for table visibility)
-            Text(
-              base.isDestroyed ? '✕' : '${base.currentResistance}',
-              style: (_isCenter
-                      ? FabulaTypography.headlineCounter
-                      : FabulaTypography.displayScore.copyWith(fontSize: 28))
-                  .copyWith(color: _accentColor),
-            ),
-
-            Text(
-              '/ ${base.maxResistance}',
-              style: FabulaTypography.caption.copyWith(
-                color: _accentColor.withValues(alpha: 0.6),
-              ),
-            ),
-
-            const SizedBox(height: 4),
-
-            // Action buttons (hidden when destroyed or locked)
-            if (!base.isDestroyed && !isLocked) ...[
-              _ActionBar(
-                isCenter: _isCenter,
-                onDamage: onDamage,
-                onInfluence: onInfluence,
-              ),
-            ] else if (isLocked && !base.isDestroyed) ...[
-              Icon(
-                Icons.lock_outline,
-                size: 14,
-                color: FabulaColors.green.withValues(alpha: 0.7),
-              ),
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -253,11 +264,11 @@ class _ActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.center,
-      spacing: 4,
+      spacing: FabulaTokens.space4,
       children: [
         _SmallActionButton(
           icon: Icons.flash_on,
-          color: FabulaColors.red,
+          color: FabulaColors.error,
           tooltip: 'Dano de Ofensiva',
           onTap: () => _showDamageDialog(context),
         ),
@@ -290,7 +301,8 @@ class _ActionBar extends StatelessWidget {
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: FabulaColors.red),
+            style:
+                ElevatedButton.styleFrom(backgroundColor: FabulaColors.error),
             onPressed: () {
               final v = int.tryParse(ctrl.text);
               if (v != null && v > 0) Navigator.pop(ctx, v);
@@ -321,7 +333,7 @@ class _ActionBar extends StatelessWidget {
                   const InputDecoration(labelText: 'Influência Atacante'),
               autofocus: true,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: FabulaTokens.space8),
             TextField(
               controller: blkCtrl,
               keyboardType: TextInputType.number,
@@ -373,9 +385,9 @@ class _SmallActionButton extends StatelessWidget {
       message: tooltip,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(FabulaTokens.radiusSm),
         child: Padding(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(FabulaTokens.space4),
           child: Icon(icon, size: 16, color: color),
         ),
       ),

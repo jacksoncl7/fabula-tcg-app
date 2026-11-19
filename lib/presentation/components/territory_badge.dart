@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_tokens.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
 
 /// Visual badge representing base or territory type and durability.
@@ -29,16 +30,27 @@ class TerritoryBadge extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(FabulaTokens.radiusMd),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(
+          horizontal: FabulaTokens.space16,
+          vertical: FabulaTokens.space12,
+        ),
         decoration: BoxDecoration(
-          color: effectiveColor.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(12),
+          color: FabulaColors.surfaceElevated,
+          borderRadius: BorderRadius.circular(FabulaTokens.radiusMd),
           border: Border.all(
-            color: isExposed ? FabulaColors.red : effectiveColor,
+            color: isExposed ? FabulaColors.error : effectiveColor,
             width: isExposed ? 2.5 : 1.5,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: (isExposed ? FabulaColors.error : effectiveColor)
+                  .withValues(alpha: 0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -56,22 +68,22 @@ class TerritoryBadge extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.only(right: 4),
                     child: Icon(Icons.warning_amber_rounded,
-                        size: 16, color: FabulaColors.red),
+                        size: 16, color: FabulaColors.error),
                   ),
                 Text(
                   title.toUpperCase(),
                   style: FabulaTypography.caption.copyWith(
-                    color: isExposed ? FabulaColors.red : effectiveColor,
+                    color: isExposed ? FabulaColors.error : effectiveColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: FabulaTokens.space4),
             Text(
               '$resistance',
               style: FabulaTypography.headlineCounter.copyWith(
-                color: isExposed ? FabulaColors.red : null,
+                color: isExposed ? FabulaColors.error : null,
               ),
             ),
           ],
@@ -103,13 +115,16 @@ class PhaseChip extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        duration: FabulaTokens.durationNormal,
+        padding: const EdgeInsets.symmetric(
+          horizontal: FabulaTokens.space16,
+          vertical: FabulaTokens.space8,
+        ),
         decoration: BoxDecoration(
-          color: isActive ? color : color.withValues(alpha: 0.08),
-          borderRadius: BorderRadius.circular(20),
+          color: isActive ? color : color.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(FabulaTokens.radiusXl),
           border: Border.all(
-            color: isActive ? color : color.withValues(alpha: 0.25),
+            color: isActive ? color : color.withValues(alpha: 0.3),
             width: isActive ? 2 : 1,
           ),
           boxShadow: isActive

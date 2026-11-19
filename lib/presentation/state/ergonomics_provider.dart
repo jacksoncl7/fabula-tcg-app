@@ -12,7 +12,7 @@ enum AccessibilityDisplayMode {
 @immutable
 class ErgonomicsState {
   const ErgonomicsState({
-    this.themeMode = ThemeMode.system,
+    this.themeMode = ThemeMode.dark,
     this.displayMode = AccessibilityDisplayMode.standard,
     this.isStreamModeActive = false,
     this.isWakelockEnabled = true,

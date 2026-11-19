@@ -12,15 +12,15 @@ void main() {
     });
 
     test('initial state has default values', () {
-      expect(notifier.state.themeMode, ThemeMode.system);
+      expect(notifier.state.themeMode, ThemeMode.dark);
       expect(notifier.state.displayMode, AccessibilityDisplayMode.standard);
       expect(notifier.state.isStreamModeActive, isFalse);
       expect(notifier.state.isWakelockEnabled, isTrue);
     });
 
     test('setThemeMode updates themeMode', () {
-      notifier.setThemeMode(ThemeMode.dark);
-      expect(notifier.state.themeMode, ThemeMode.dark);
+      notifier.setThemeMode(ThemeMode.light);
+      expect(notifier.state.themeMode, ThemeMode.light);
     });
 
     test('setDisplayMode updates accessibility mode', () {

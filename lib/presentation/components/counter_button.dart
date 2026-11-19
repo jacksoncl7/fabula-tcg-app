@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_tokens.dart';
+
 /// Large, high-visibility counter button with haptic feedback.
 ///
 /// Designed for quick increment/decrement taps during tabletop gameplay.
@@ -11,7 +14,7 @@ class CounterButton extends StatelessWidget {
     super.key,
     this.backgroundColor,
     this.iconColor,
-    this.size = 64.0,
+    this.size = FabulaTokens.counterButtonSizeLg,
     this.tooltip,
   });
 
@@ -30,12 +33,17 @@ class CounterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bg = backgroundColor ?? theme.colorScheme.primaryContainer;
-    final fg = iconColor ?? theme.colorScheme.onPrimaryContainer;
+    final bg = backgroundColor ?? theme.colorScheme.surfaceContainerHighest;
+    final fg = iconColor ?? theme.colorScheme.onSurface;
 
     final button = Material(
       color: bg,
-      shape: const CircleBorder(),
+      shape: CircleBorder(
+        side: BorderSide(
+          color: (iconColor ?? FabulaColors.border).withValues(alpha: 0.35),
+          width: 1.5,
+        ),
+      ),
       elevation: 2,
       child: InkWell(
         customBorder: const CircleBorder(),
@@ -81,7 +89,7 @@ class IncrementDecrementPill extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(FabulaTokens.radiusXl),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(

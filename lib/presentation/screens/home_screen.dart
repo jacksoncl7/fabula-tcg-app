@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fabula_tcg_app/core/errors/exceptions.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_gradients.dart';
+import 'package:fabula_tcg_app/core/theme/fabula_tokens.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
+import 'package:fabula_tcg_app/core/theme/widgets/fabula_card.dart';
+import 'package:fabula_tcg_app/core/theme/widgets/fabula_gradient_button.dart';
 import 'package:fabula_tcg_app/domain/entities/territory_state.dart';
 import 'package:fabula_tcg_app/presentation/components/counter_button.dart';
 import 'package:fabula_tcg_app/presentation/components/rotatable_player_zone.dart';
@@ -19,14 +23,14 @@ void _safeDo(BuildContext context, void Function() action) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(e.message),
-        backgroundColor: FabulaColors.red,
+        backgroundColor: FabulaColors.error,
         duration: const Duration(seconds: 2),
       ),
     );
   }
 }
 
-/// Interactive Tabletop Playmat Screen.
+/// Interactive Tabletop Playmat Screen with Brasofuturist styling.
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
@@ -39,6 +43,7 @@ class HomeScreen extends ConsumerWidget {
     final ergonomics = ref.watch(ergonomicsProvider);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -91,11 +96,16 @@ class HomeScreen extends ConsumerWidget {
 
             // Middle Toolbar: Stream Mode, Settings, and Accessibility controls
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              color: Theme.of(context)
-                  .colorScheme
-                  .surfaceContainerHighest
-                  .withValues(alpha: 0.4),
+              padding: const EdgeInsets.symmetric(
+                horizontal: FabulaTokens.space16,
+                vertical: FabulaTokens.space4,
+              ),
+              decoration: const BoxDecoration(
+                color: FabulaColors.surfaceOverlay,
+                border: Border.symmetric(
+                  horizontal: BorderSide(color: FabulaColors.border, width: 1),
+                ),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -115,8 +125,10 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   Text(
                     'FÁBULA TCG ASSISTANT',
-                    style: FabulaTypography.caption
-                        .copyWith(fontWeight: FontWeight.bold),
+                    style: FabulaTypography.overline.copyWith(
+                      color: FabulaColors.textSecondary,
+                      letterSpacing: 1.5,
+                    ),
                   ),
                   PopupMenuButton<AccessibilityDisplayMode>(
                     icon: const Icon(Icons.accessibility_new),
@@ -229,39 +241,54 @@ class _PlayerDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(
+          horizontal: FabulaTokens.space16,
+          vertical: FabulaTokens.space8,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             if (!isStreamMode)
-              Text(
-                title,
-                style: FabulaTypography.phaseLabel.copyWith(color: accentColor),
+              Padding(
+                padding: const EdgeInsets.only(bottom: FabulaTokens.space4),
+                child: Text(
+                  title,
+                  style:
+                      FabulaTypography.phaseLabel.copyWith(color: accentColor),
+                ),
               ),
 
             // Central Resource Counter (large for table visibility)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
-              children: [
-                Text(
-                  '$currentResources',
-                  style: FabulaTypography.displayScore.copyWith(
-                    color: FabulaColors.yellow,
+            FabulaCard(
+              padding: const EdgeInsets.symmetric(
+                horizontal: FabulaTokens.space24,
+                vertical: FabulaTokens.space4,
+              ),
+              borderColor: accentColor.withValues(alpha: 0.3),
+              glowColor: accentColor,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    '$currentResources',
+                    style: FabulaTypography.displayScore.copyWith(
+                      color: FabulaColors.yellow,
+                    ),
                   ),
-                ),
-                Text(
-                  ' / $maxResources',
-                  style: FabulaTypography.headlineCounter.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
+                  Text(
+                    ' / $maxResources',
+                    style: FabulaTypography.headlineCounter.copyWith(
+                      color: FabulaColors.textSecondary,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+
+            const SizedBox(height: FabulaTokens.space8),
 
             // Resource controls
             Row(
@@ -270,42 +297,39 @@ class _PlayerDashboard extends StatelessWidget {
                 CounterButton(
                   icon: Icons.remove,
                   onPressed: onDecrement,
-                  size: 52,
+                  size: FabulaTokens.counterButtonSize,
                   tooltip: 'Gastar 1 Recurso',
                 ),
-                const SizedBox(width: 24),
-                ElevatedButton.icon(
+                const SizedBox(width: FabulaTokens.space16),
+                FabulaGradientButton(
                   onPressed: onRestore,
-                  icon: const Icon(Icons.refresh, size: 18),
-                  label: const Text('Restaurar'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: FabulaColors.green,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                  ),
+                  icon: Icons.refresh,
+                  label: 'Restaurar',
+                  gradient: FabulaGradients.restoration,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: FabulaTokens.space12),
                 OutlinedButton.icon(
                   onPressed: onNextTurn,
                   icon: const Icon(Icons.arrow_forward, size: 18),
                   label: const Text('Próx. Turno'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 12),
+                      horizontal: FabulaTokens.space14,
+                      vertical: FabulaTokens.space12,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 24),
+                const SizedBox(width: FabulaTokens.space16),
                 CounterButton(
                   icon: Icons.add,
                   onPressed: onIncrement,
-                  size: 52,
+                  size: FabulaTokens.counterButtonSize,
                   tooltip: 'Adicionar Bônus',
                 ),
               ],
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: FabulaTokens.space8),
 
             // Territory zone
             if (!isStreamMode)
