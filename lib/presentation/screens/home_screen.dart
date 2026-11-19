@@ -79,16 +79,13 @@ class HomeScreen extends ConsumerWidget {
                         .read(player2TerritoryProvider.notifier)
                         .applyDamage(baseId, dmg),
                   ),
-                  onResolveInfluence: (baseId, atk, blk) => _safeDo(
+                  onConquerBase: (baseId) => _safeDo(
                     context,
-                    () => ref
-                        .read(player2TerritoryProvider.notifier)
-                        .resolveInfluenceContest(
-                          baseId: baseId,
-                          attackerInfluence: atk,
-                          blockerInfluence: blk,
-                          conqueror: p1.playerId,
-                        ),
+                    () =>
+                        ref.read(player2TerritoryProvider.notifier).conquerBase(
+                              baseId: baseId,
+                              newController: p1.playerId,
+                            ),
                   ),
                 ),
               ),
@@ -187,16 +184,13 @@ class HomeScreen extends ConsumerWidget {
                         .read(player1TerritoryProvider.notifier)
                         .applyDamage(baseId, dmg),
                   ),
-                  onResolveInfluence: (baseId, atk, blk) => _safeDo(
+                  onConquerBase: (baseId) => _safeDo(
                     context,
-                    () => ref
-                        .read(player1TerritoryProvider.notifier)
-                        .resolveInfluenceContest(
-                          baseId: baseId,
-                          attackerInfluence: atk,
-                          blockerInfluence: blk,
-                          conqueror: p2.playerId,
-                        ),
+                    () =>
+                        ref.read(player1TerritoryProvider.notifier).conquerBase(
+                              baseId: baseId,
+                              newController: p2.playerId,
+                            ),
                   ),
                 ),
               ),
@@ -221,7 +215,7 @@ class _PlayerDashboard extends StatelessWidget {
     required this.isStreamMode,
     required this.territory,
     required this.onApplyDamage,
-    required this.onResolveInfluence,
+    required this.onConquerBase,
   });
 
   final String title;
@@ -235,7 +229,7 @@ class _PlayerDashboard extends StatelessWidget {
   final bool isStreamMode;
   final TerritoryState territory;
   final void Function(String baseId, int damage) onApplyDamage;
-  final void Function(String baseId, int atk, int blk) onResolveInfluence;
+  final void Function(String baseId) onConquerBase;
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +330,7 @@ class _PlayerDashboard extends StatelessWidget {
               TerritoryZoneWidget(
                 territory: territory,
                 onApplyDamage: onApplyDamage,
-                onResolveInfluence: onResolveInfluence,
+                onConquerBase: onConquerBase,
                 isStreamMode: isStreamMode,
               ),
           ],

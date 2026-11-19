@@ -90,6 +90,22 @@ class TerritoryNotifier extends StateNotifier<TerritoryState> {
     _updateBase(index, updated);
   }
 
+  /// Transfers control of [baseId] directly to [newController] upon confirmed conquest.
+  ///
+  /// Throws [GameRuleException] if the base cannot be targeted (Center locked or destroyed).
+  void conquerBase({
+    required String baseId,
+    required PlayerId newController,
+  }) {
+    final index = _requireBaseIndex(baseId);
+    final base = state.bases[index];
+
+    _validateAttackTarget(base);
+
+    final updated = base.copyWith(currentController: newController);
+    _updateBase(index, updated);
+  }
+
   /// Validates whether a base can currently be attacked or influenced.
   ///
   /// Throws [GameRuleException] if the Center is targeted while protected.

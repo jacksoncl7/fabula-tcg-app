@@ -18,7 +18,7 @@ class TerritoryZoneWidget extends StatelessWidget {
     super.key,
     required this.territory,
     required this.onApplyDamage,
-    required this.onResolveInfluence,
+    required this.onConquerBase,
     this.isStreamMode = false,
   });
 
@@ -27,12 +27,8 @@ class TerritoryZoneWidget extends StatelessWidget {
   /// Callback when the user applies damage to a base.
   final void Function(String baseId, int damage) onApplyDamage;
 
-  /// Callback when the user resolves an influence contest on a base.
-  final void Function(
-    String baseId,
-    int attackerInfluence,
-    int blockerInfluence,
-  ) onResolveInfluence;
+  /// Callback when the user confirms conquest of a base by influence.
+  final void Function(String baseId) onConquerBase;
 
   final bool isStreamMode;
 
@@ -71,7 +67,7 @@ class TerritoryZoneWidget extends StatelessWidget {
                   base: b,
                   isLocked: false,
                   onDamage: (dmg) => onApplyDamage(b.id, dmg),
-                  onInfluence: (atk, blk) => onResolveInfluence(b.id, atk, blk),
+                  onConquer: () => onConquerBase(b.id),
                 ),
               )
               .toList(),
@@ -84,7 +80,7 @@ class TerritoryZoneWidget extends StatelessWidget {
           base: center,
           isLocked: !isExposed && !isLost,
           onDamage: (dmg) => onApplyDamage(center.id, dmg),
-          onInfluence: (atk, blk) => onResolveInfluence(center.id, atk, blk),
+          onConquer: () => onConquerBase(center.id),
         ),
       ],
     );
@@ -136,7 +132,7 @@ class _BaseTile extends StatelessWidget {
     required this.base,
     required this.isLocked,
     required this.onDamage,
-    required this.onInfluence,
+    required this.onConquer,
   });
 
   final BaseState base;
@@ -144,7 +140,7 @@ class _BaseTile extends StatelessWidget {
   /// Whether this base is currently locked from attack/influence.
   final bool isLocked;
   final void Function(int damage) onDamage;
-  final void Function(int atk, int blk) onInfluence;
+  final VoidCallback onConquer;
 
   bool get _isCenter => base.type == BaseType.center;
   bool get _isCaptured =>
@@ -228,7 +224,7 @@ class _BaseTile extends StatelessWidget {
                 _ActionBar(
                   isCenter: _isCenter,
                   onDamage: onDamage,
-                  onInfluence: onInfluence,
+                  onConquer: onConquer,
                 ),
               ] else if (isLocked && !base.isDestroyed) ...[
                 Icon(
@@ -253,30 +249,35 @@ class _ActionBar extends StatelessWidget {
   const _ActionBar({
     required this.isCenter,
     required this.onDamage,
-    required this.onInfluence,
+    required this.onConquer,
   });
 
   final bool isCenter;
   final void Function(int damage) onDamage;
-  final void Function(int atk, int blk) onInfluence;
+  final VoidCallback onConquer;
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       spacing: FabulaTokens.space4,
       children: [
         _SmallActionButton(
           icon: Icons.flash_on,
+          size: 16,
+          padding: FabulaTokens.space4,
           color: FabulaColors.error,
           tooltip: 'Dano de Ofensiva',
           onTap: () => _showDamageDialog(context),
         ),
         _SmallActionButton(
           icon: Icons.people,
+          size: 13,
+          padding: 3.0,
           color: FabulaColors.purple,
           tooltip: 'Disputa de Influência',
-          onTap: () => _showInfluenceDialog(context),
+          onTap: () => _showConquerConfirmDialog(context),
         ),
       ],
     );
@@ -315,54 +316,28 @@ class _ActionBar extends StatelessWidget {
     if (result != null) onDamage(result);
   }
 
-  Future<void> _showInfluenceDialog(BuildContext context) async {
-    final atkCtrl = TextEditingController(text: '0');
-    final blkCtrl = TextEditingController(text: '0');
-    final result = await showDialog<(int, int)>(
+  Future<void> _showConquerConfirmDialog(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Disputa de Influência'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: atkCtrl,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration:
-                  const InputDecoration(labelText: 'Influência Atacante'),
-              autofocus: true,
-            ),
-            const SizedBox(height: FabulaTokens.space8),
-            TextField(
-              controller: blkCtrl,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration:
-                  const InputDecoration(labelText: 'Influência Bloqueadora'),
-            ),
-          ],
-        ),
+        content: const Text('A base foi tomada por influência?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(ctx),
+            onPressed: () => Navigator.pop(ctx, false),
             child: const Text('Cancelar'),
           ),
           ElevatedButton(
             style:
                 ElevatedButton.styleFrom(backgroundColor: FabulaColors.purple),
-            onPressed: () {
-              final atk = int.tryParse(atkCtrl.text) ?? 0;
-              final blk = int.tryParse(blkCtrl.text) ?? 0;
-              Navigator.pop(ctx, (atk, blk));
-            },
+            onPressed: () => Navigator.pop(ctx, true),
             child:
-                const Text('Resolver', style: TextStyle(color: Colors.white)),
+                const Text('Confirmar', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
     );
-    if (result != null) onInfluence(result.$1, result.$2);
+    if (confirmed == true) onConquer();
   }
 }
 
@@ -372,12 +347,16 @@ class _SmallActionButton extends StatelessWidget {
     required this.color,
     required this.tooltip,
     required this.onTap,
+    this.size = 16.0,
+    this.padding = FabulaTokens.space4,
   });
 
   final IconData icon;
   final Color color;
   final String tooltip;
   final VoidCallback onTap;
+  final double size;
+  final double padding;
 
   @override
   Widget build(BuildContext context) {
@@ -387,8 +366,8 @@ class _SmallActionButton extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(FabulaTokens.radiusSm),
         child: Padding(
-          padding: const EdgeInsets.all(FabulaTokens.space4),
-          child: Icon(icon, size: 16, color: color),
+          padding: EdgeInsets.all(padding),
+          child: Icon(icon, size: size, color: color),
         ),
       ),
     );

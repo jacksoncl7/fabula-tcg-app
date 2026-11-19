@@ -298,6 +298,53 @@ void main() {
   });
 
   // -------------------------------------------------------------------------
+  group('TerritoryNotifier.conquerBase', () {
+    test('conquers surrounding base transferring controller to opponent', () {
+      final n = _mounted();
+      final baseId = n.state.surroundings.first.id;
+
+      n.conquerBase(baseId: baseId, newController: _p2);
+
+      final base = n.state.bases.firstWhere((b) => b.id == baseId);
+      expect(base.currentController, _p2);
+    });
+
+    test('throws GameRuleException when attempting to conquer locked center',
+        () {
+      final n = _mounted();
+      expect(
+        () => n.conquerBase(baseId: n.state.center.id, newController: _p2),
+        throwsA(isA<GameRuleException>()),
+      );
+    });
+
+    test('conquers center when center is exposed', () {
+      final n = _mounted();
+      // Destroy surroundings to expose center
+      for (final b in n.state.surroundings) {
+        n.applyDamage(b.id, kSurroundingResistance);
+      }
+      expect(n.state.isCenterExposed, true);
+
+      n.conquerBase(baseId: n.state.center.id, newController: _p2);
+      expect(n.state.center.currentController, _p2);
+      expect(n.state.isCenterLost, true);
+    });
+
+    test('throws GameRuleException when attempting to conquer destroyed base',
+        () {
+      final n = _mounted();
+      final baseId = n.state.surroundings.first.id;
+      n.applyDamage(baseId, kSurroundingResistance);
+
+      expect(
+        () => n.conquerBase(baseId: baseId, newController: _p2),
+        throwsA(isA<GameRuleException>()),
+      );
+    });
+  });
+
+  // -------------------------------------------------------------------------
   group('Victory condition', () {
     test('isCenterLost is true when center is destroyed', () {
       final n = _mounted();

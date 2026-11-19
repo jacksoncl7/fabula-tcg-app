@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:fabula_tcg_app/core/utils/player_id.dart';
+import 'package:fabula_tcg_app/domain/entities/territory_state.dart';
 import 'package:fabula_tcg_app/presentation/components/counter_button.dart';
 import 'package:fabula_tcg_app/presentation/components/rotatable_player_zone.dart';
 import 'package:fabula_tcg_app/presentation/components/territory_badge.dart';
+import 'package:fabula_tcg_app/presentation/components/territory_zone_widget.dart';
 
 void main() {
   group('RotatablePlayerZone', () {
@@ -131,6 +134,82 @@ void main() {
       );
 
       expect(find.byIcon(Icons.warning_amber_rounded), findsOneWidget);
+    });
+  });
+
+  group('TerritoryZoneWidget Influence Dispute', () {
+    testWidgets(
+        'tapping influence button opens confirmation dialog and confirms conquest',
+        (tester) async {
+      String? conqueredBaseId;
+      final territory = TerritoryState.initial(const PlayerId('player_1'));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: TerritoryZoneWidget(
+                territory: territory,
+                onApplyDamage: (_, __) {},
+                onConquerBase: (baseId) => conqueredBaseId = baseId,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Verify influence button is present
+      final influenceButton = find.byIcon(Icons.people).first;
+      expect(influenceButton, findsOneWidget);
+
+      // Tap on influence button
+      await tester.tap(influenceButton);
+      await tester.pumpAndSettle();
+
+      // Expect confirmation dialog with prompt text
+      expect(find.text('Disputa de Influência'), findsOneWidget);
+      expect(find.text('A base foi tomada por influência?'), findsOneWidget);
+      expect(find.text('Confirmar'), findsOneWidget);
+      expect(find.text('Cancelar'), findsOneWidget);
+
+      // Tap Confirmar
+      await tester.tap(find.text('Confirmar'));
+      await tester.pumpAndSettle();
+
+      // Dialog should close and callback invoked
+      expect(find.text('A base foi tomada por influência?'), findsNothing);
+      expect(conqueredBaseId, territory.surroundings.first.id);
+    });
+
+    testWidgets('tapping Cancel in influence dialog does not trigger callback',
+        (tester) async {
+      String? conqueredBaseId;
+      final territory = TerritoryState.initial(const PlayerId('player_1'));
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: TerritoryZoneWidget(
+                territory: territory,
+                onApplyDamage: (_, __) {},
+                onConquerBase: (baseId) => conqueredBaseId = baseId,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Tap on influence button
+      await tester.tap(find.byIcon(Icons.people).first);
+      await tester.pumpAndSettle();
+
+      // Tap Cancelar
+      await tester.tap(find.text('Cancelar'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('A base foi tomada por influência?'), findsNothing);
+      expect(conqueredBaseId, isNull);
     });
   });
 }
