@@ -84,6 +84,16 @@ class ResourceNotifier extends StateNotifier<ResourceState> {
     );
   }
 
+  /// Resets resources to initial match state (Turn 1 with initialMaxResources).
+  void reset() {
+    state = ResourceState(
+      playerId: state.playerId,
+      currentResources: AppConstants.initialMaxResources,
+      maxResources: AppConstants.initialMaxResources,
+      turnNumber: 1,
+    );
+  }
+
   /// Modifies the resource cap (for card effects that alter the limit).
   void modifyResourceCap(int newCap) {
     if (newCap < 0) {

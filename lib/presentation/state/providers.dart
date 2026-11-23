@@ -1,10 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fabula_tcg_app/core/utils/player_id.dart';
+import 'package:fabula_tcg_app/domain/entities/match_state.dart';
 import 'package:fabula_tcg_app/domain/entities/resource_state.dart';
 import 'package:fabula_tcg_app/domain/entities/territory_state.dart';
+import 'package:fabula_tcg_app/domain/rules/match_rules.dart';
 import 'package:fabula_tcg_app/domain/rules/resource_rules.dart';
 import 'package:fabula_tcg_app/domain/rules/territory_rules.dart';
+
+/// Provider for match progression and active turn notifier.
+final matchProvider = StateNotifierProvider<MatchNotifier, MatchState>(
+  (ref) => MatchNotifier(),
+);
 
 /// Provider for Player 1's resource notifier.
 final player1ResourceProvider =
