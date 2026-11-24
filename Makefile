@@ -1,4 +1,4 @@
-.PHONY: help setup clean run test analyze build-runner build-apk build-ipa check format
+.PHONY: help setup clean run test analyze build-runner build-apk build-ipa build-web check format
 
 help: ## Exibe a lista de comandos disponíveis
 	@echo "=========================================================="
@@ -33,5 +33,8 @@ build-apk: ## Compila o aplicativo para Android em modo Release
 
 build-ipa: ## Compila o pacote iOS Release (requer macOS e Xcode)
 	flutter build ipa --release
+
+build-web: ## Compila a versão Web otimizada para GitHub Pages
+	flutter build web --release --base-href "/fabula-tcg-app/"
 
 check: analyze test ## Executa validação completa (análise estática + testes)

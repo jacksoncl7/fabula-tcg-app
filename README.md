@@ -29,7 +29,28 @@ O projeto conta com um `Makefile` configurado para facilitar a rotina de desenvo
 | `make clean` | Limpa diretórios temporários e recarrega dependências |
 | `make build-apk` | Compila o pacote APK de produção (Android Release) |
 | `make build-ipa` | Compila o pacote de produção para iOS (requer macOS e Xcode) |
+| `make build-web` | Compila o aplicativo para Web (GitHub Pages / SPA) |
 | `make help` | Exibe a lista interativa de todos os comandos |
+
+---
+
+## 🌐 Publicação Web (GitHub Pages)
+
+O projeto está configurado para deploy contínuo no **GitHub Pages** via **GitHub Actions** através do workflow [`.github/workflows/deploy-web.yml`](.github/workflows/deploy-web.yml).
+
+### URL Publicada Prevista
+- **URL do Projeto**: `https://jacksoncl7.github.io/fabula-tcg-app/`
+  *(O subcaminho `/fabula-tcg-app/` corresponde ao nome do repositório no GitHub).*
+
+### Passos para Ativação no GitHub
+1. Acesse o repositório no GitHub (`https://github.com/jacksoncl7/fabula-tcg-app`).
+2. Vá em **Settings** → **Pages** (no menu lateral esquerdo).
+3. Na seção **Build and deployment**:
+   - Em **Source**, selecione **GitHub Actions**.
+4. Dispare o deploy:
+   - Faça push na branch `main`, ou
+   - Vá na aba **Actions**, selecione o workflow **Deploy Web to GitHub Pages** e clique em **Run workflow**.
+5. Quando o deploy concluir, a URL pública estará disponível na página de **Settings → Pages** e na visualização da execução da Action.
 
 ---
 
@@ -67,6 +88,11 @@ Caso não queira ou não possa utilizar `make`, utilize os comandos oficiais do 
      ```bash
      flutter build ipa --release
      ```
+   - **Web (GitHub Pages)**:
+     ```bash
+     flutter build web --release --base-href "/fabula-tcg-app/"
+     ```
+     *(Substitua `/fabula-tcg-app/` por `/` apenas se o repositório for um site raiz de usuário no formato `<usuario>.github.io`).*
 
 ---
 
