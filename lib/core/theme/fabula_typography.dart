@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Typography configuration tailored for tabletop play visibility and
 /// emulating the visual hierarchy of fabulatcg.com.br.

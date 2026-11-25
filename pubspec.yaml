@@ -13,6 +13,7 @@ dependencies:
   flutter_riverpod: ^2.6.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  material_ui: ^1.11.1
   path_provider: ^2.1.4
   wakelock_plus: ^1.2.8
 

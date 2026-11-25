@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Rotates its child by 180 degrees if [isRotated] is true.
 ///
