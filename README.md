@@ -100,7 +100,7 @@ Caso não queira ou não possa utilizar `make`, utilize os comandos oficiais do 
 
 - **Padrão Arquitetural**: Clean Architecture com abordagem *Feature-First*.
 - **Gerenciamento de Estado**: Riverpod com controllers/notifiers imutáveis.
-- **Identidade Visual**: Paleta baseada nas 7 cores oficiais de cartas/bases de Fábula TCG e tipografia de alta legibilidade para visualização de mesa (1+ metro de distância).
+- **Identidade Visual e Cores**: Diretrizes e tokens detalhados em [docs/design-system.md](docs/design-system.md), fundamentados no Brasofuturismo e na paleta institucional (Amarelo Dourado `#F8BD52`, Verde-Petróleo `#0A4038`, Amarelo Claro `#FCE181`, Laranja-Âmbar `#F09E38`, Verde-Floresta `#083315` e Verde-Esmeralda `#126B55`).
 - **Regras de Negócio**: Consulte [AGENTS.md](AGENTS.md) para detalhes das regras oficiais do jogo (recursos, turnos, territórios e bases).
 
 ---
