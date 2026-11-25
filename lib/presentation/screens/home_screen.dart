@@ -91,7 +91,7 @@ class HomeScreen extends ConsumerWidget {
               child: RotatablePlayerZone(
                 isRotated: true,
                 child: _PlayerDashboard(
-                  title: 'Jogador 2 (Oponente)',
+                  title: 'Jogador 2',
                   isActive: !isP1Active,
                   currentResources: p2.currentResources,
                   maxResources: p2.maxResources,
@@ -272,7 +272,7 @@ class HomeScreen extends ConsumerWidget {
               child: RotatablePlayerZone(
                 isRotated: false,
                 child: _PlayerDashboard(
-                  title: 'Jogador 1 (Você)',
+                  title: 'Jogador 1',
                   isActive: isP1Active,
                   currentResources: p1.currentResources,
                   maxResources: p1.maxResources,
