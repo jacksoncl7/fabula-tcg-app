@@ -24,16 +24,16 @@ abstract final class AppTheme {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: FabulaColors.surfaceDark,
         colorScheme: const ColorScheme.dark(
-          primary: FabulaColors.purple,
-          onPrimary: FabulaColors.white,
+          primary: FabulaColors.brandGoldenYellow,
+          onPrimary: FabulaColors.brandForestGreen,
           primaryContainer: FabulaColors.surfaceOverlay,
-          onPrimaryContainer: FabulaColors.purple,
-          secondary: FabulaColors.teal,
+          onPrimaryContainer: FabulaColors.brandCreamYellow,
+          secondary: FabulaColors.brandEmeraldGreen,
           onSecondary: FabulaColors.white,
-          secondaryContainer: FabulaColors.surfaceElevated,
-          onSecondaryContainer: FabulaColors.teal,
-          tertiary: FabulaColors.yellow,
-          onTertiary: FabulaColors.surfaceDark,
+          secondaryContainer: FabulaColors.brandDarkTeal,
+          onSecondaryContainer: FabulaColors.brandCreamYellow,
+          tertiary: FabulaColors.brandAmberOrange,
+          onTertiary: FabulaColors.white,
           surface: FabulaColors.surfaceDark,
           onSurface: FabulaColors.textPrimary,
           surfaceContainerHighest: FabulaColors.surfaceOverlay,
@@ -67,8 +67,8 @@ abstract final class AppTheme {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: FabulaColors.purple,
-            foregroundColor: FabulaColors.white,
+            backgroundColor: FabulaColors.brandGoldenYellow,
+            foregroundColor: FabulaColors.brandForestGreen,
             padding: const EdgeInsets.symmetric(
               horizontal: FabulaTokens.space16,
               vertical: FabulaTokens.space12,
@@ -76,13 +76,16 @@ abstract final class AppTheme {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(FabulaTokens.radiusMd),
             ),
-            textStyle: FabulaTypography.actionButton,
+            textStyle: FabulaTypography.actionButton.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: OutlinedButton.styleFrom(
-            foregroundColor: FabulaColors.teal,
-            side: const BorderSide(color: FabulaColors.teal, width: 1.5),
+            foregroundColor: FabulaColors.brandGoldenYellow,
+            side: const BorderSide(
+                color: FabulaColors.brandGoldenYellow, width: 1.5),
             padding: const EdgeInsets.symmetric(
               horizontal: FabulaTokens.space16,
               vertical: FabulaTokens.space12,
@@ -137,9 +140,12 @@ abstract final class AppTheme {
         brightness: Brightness.light,
         scaffoldBackgroundColor: FabulaColors.surfaceLight,
         colorScheme: const ColorScheme.light(
-          primary: FabulaColors.jungleGreen,
+          primary: FabulaColors.brandDarkTeal,
           onPrimary: FabulaColors.white,
-          secondary: FabulaColors.teal,
+          secondary: FabulaColors.brandEmeraldGreen,
+          onSecondary: FabulaColors.white,
+          tertiary: FabulaColors.brandGoldenYellow,
+          onTertiary: FabulaColors.brandForestGreen,
           surface: FabulaColors.surfaceLight,
           onSurface: FabulaColors.surfaceDark,
           outline: Color(0xFFCBD5E0),

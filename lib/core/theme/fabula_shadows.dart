@@ -13,6 +13,24 @@ abstract final class FabulaShadows {
         ),
       ];
 
+  /// Brand golden glow for primary counters and active selections.
+  static List<BoxShadow> get goldenGlow => [
+        BoxShadow(
+          color: FabulaColors.brandGoldenYellow.withValues(alpha: 0.35),
+          blurRadius: 16,
+          offset: const Offset(0, 4),
+        ),
+      ];
+
+  /// Brand teal eco-tech glow.
+  static List<BoxShadow> get brandTealGlow => [
+        BoxShadow(
+          color: FabulaColors.brandEmeraldGreen.withValues(alpha: 0.30),
+          blurRadius: 16,
+          offset: const Offset(0, 4),
+        ),
+      ];
+
   /// Teal eco-tech glow.
   static List<BoxShadow> get tealGlow => [
         BoxShadow(

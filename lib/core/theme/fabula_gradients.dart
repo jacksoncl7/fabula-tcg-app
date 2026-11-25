@@ -6,6 +6,42 @@ import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
 ///
 /// Channeling Brasofuturism: solarpunk eco-tech with vibrant natural tones.
 abstract final class FabulaGradients {
+  /// Brasofuturist Split Background — brand split from dark teal to golden solar glow.
+  static const LinearGradient backgroundSplit = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      FabulaColors.brandDarkTeal,
+      FabulaColors.brandEmeraldGreen,
+      FabulaColors.brandCreamYellow,
+      FabulaColors.brandGoldenYellow,
+      FabulaColors.brandAmberOrange,
+    ],
+    stops: [0.0, 0.35, 0.50, 0.80, 1.0],
+  );
+
+  /// Golden Hero — warm golden sand gradient for logo, counters and highlights.
+  static const LinearGradient goldenHero = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      FabulaColors.brandCreamYellow,
+      FabulaColors.brandGoldenYellow,
+      FabulaColors.brandAmberOrange,
+    ],
+    stops: [0.0, 0.60, 1.0],
+  );
+
+  /// Deep Card Surface — organic dark surface transition for cards.
+  static const LinearGradient deepCardSurface = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      FabulaColors.brandDarkTeal,
+      FabulaColors.brandForestGreen,
+    ],
+  );
+
   /// Nightshade — Brasofuturism signature gradient.
   /// Source: .has-nightshade-gradient-background
   ///         linear-gradient(135deg, #330968, #31cdcf)

@@ -1,7 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
-import 'package:fabula_tcg_app/core/theme/fabula_colors.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_gradients.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_tokens.dart';
 import 'package:fabula_tcg_app/core/theme/fabula_typography.dart';
@@ -49,13 +48,14 @@ class FabulaGradientButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (icon != null) ...[
-                Icon(icon, size: 18, color: FabulaColors.white),
+                Icon(icon, size: 18, color: Colors.white),
                 const SizedBox(width: FabulaTokens.space8),
               ],
               Text(
                 label,
                 style: FabulaTypography.actionButton.copyWith(
-                  color: FabulaColors.white,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

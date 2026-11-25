@@ -415,7 +415,7 @@ class _PlayerDashboard extends StatelessWidget {
                   Text(
                     '$currentResources',
                     style: FabulaTypography.displayScore.copyWith(
-                      color: FabulaColors.yellow,
+                      color: FabulaColors.brandGoldenYellow,
                     ),
                   ),
                   Text(

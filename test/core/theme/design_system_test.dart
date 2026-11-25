@@ -22,6 +22,16 @@ void main() {
       expect(FabulaColors.border, const Color(0xFF333333));
     });
 
+    test('Brasofuturist brand identity colors match official design system',
+        () {
+      expect(FabulaColors.brandGoldenYellow, const Color(0xFFF8BD52));
+      expect(FabulaColors.brandDarkTeal, const Color(0xFF0A4038));
+      expect(FabulaColors.brandCreamYellow, const Color(0xFFFCE181));
+      expect(FabulaColors.brandAmberOrange, const Color(0xFFF09E38));
+      expect(FabulaColors.brandForestGreen, const Color(0xFF083315));
+      expect(FabulaColors.brandEmeraldGreen, const Color(0xFF126B55));
+    });
+
     test('Brasofuturist signature accents match fabulatcg.com.br extraction',
         () {
       expect(FabulaColors.jungleGreen, const Color(0xFF00473E));
@@ -107,7 +117,7 @@ void main() {
       expect(theme.brightness, Brightness.dark);
       expect(theme.scaffoldBackgroundColor, FabulaColors.surfaceDark);
       expect(theme.colorScheme.surface, FabulaColors.surfaceDark);
-      expect(theme.colorScheme.primary, FabulaColors.purple);
+      expect(theme.colorScheme.primary, FabulaColors.brandGoldenYellow);
     });
 
     test('light theme has solid surfaceLight background', () {

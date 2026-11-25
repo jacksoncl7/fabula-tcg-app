@@ -59,6 +59,28 @@ abstract final class FabulaColors {
   /// Source: `--wp--preset--color--base-2` (#ffffff)
   static const Color surfaceLightElevated = Color(0xFFFFFFFF);
 
+  // ─── Brasofuturist Brand Identity (Priority Colors) ───
+
+  /// Primary Golden Yellow: Predominante no fundo direito, logotipo "FÁBULA",
+  /// grafismos e destaques principais.
+  static const Color brandGoldenYellow = Color(0xFFF8BD52);
+
+  /// Primary Dark Teal Green: Predominante no fundo esquerdo e áreas internas
+  /// do padrão geométrico.
+  static const Color brandDarkTeal = Color(0xFF0A4038);
+
+  /// Secondary Light Cream Yellow: Iluminação central no degradê do fundo e pontos de luz.
+  static const Color brandCreamYellow = Color(0xFFFCE181);
+
+  /// Secondary Amber Orange: Sombreamento na extremidade direita e detalhes do logotipo.
+  static const Color brandAmberOrange = Color(0xFFF09E38);
+
+  /// Secondary Deep Forest Green: Cor de texto do menu de navegação e tipografia de alto contraste.
+  static const Color brandForestGreen = Color(0xFF083315);
+
+  /// Secondary Emerald Green: Texturas, divisores e pontos de luz no fundo escuro.
+  static const Color brandEmeraldGreen = Color(0xFF126B55);
+
   // ─── Text Hierarchy ───
 
   /// High-emphasis text on dark surfaces.
