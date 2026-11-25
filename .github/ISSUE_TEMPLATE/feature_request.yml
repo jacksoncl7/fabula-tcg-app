@@ -1,0 +1,39 @@
+name: Sugestão de Funcionalidade
+description: Sugira uma nova ideia, regra de arbitragem ou melhoria para o app
+title: "feat: [breve descrição da melhoria]"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por ajudar a evoluir o Fábula TCG App!
+  - type: textarea
+    id: problem
+    attributes:
+      label: O problema ou necessidade relacionada
+      description: Explique qual necessidade de partida, arbitragem ou usabilidade motiva essa sugestão.
+      placeholder: Ex: Durante torneios, é difícil visualizar o tempo restante de cada rodada à distância.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solução Proposta
+      description: Descrição clara e concisa de como você gostaria que funcionasse.
+    validations:
+      required: true
+  - type: textarea
+    id: rulebook
+    attributes:
+      label: Referência do Livro de Regras (se aplicável)
+      description: Cite a seção/regra oficial de Fábula TCG relacionada à mecânica sugerida.
+      placeholder: Ex: Regra 1.22.5a (Disputa de Influência em Bases).
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas Consideradas
+      description: Quaisquer soluções ou fluxos alternativos que você avaliou.
+    validations:
+      required: false

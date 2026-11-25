@@ -101,4 +101,21 @@ Caso não queira ou não possa utilizar `make`, utilize os comandos oficiais do 
 - **Padrão Arquitetural**: Clean Architecture com abordagem *Feature-First*.
 - **Gerenciamento de Estado**: Riverpod com controllers/notifiers imutáveis.
 - **Identidade Visual**: Paleta baseada nas 7 cores oficiais de cartas/bases de Fábula TCG e tipografia de alta legibilidade para visualização de mesa (1+ metro de distância).
-- **Regras de Contribuição e Gitflow**: Consulte [AGENTS.md](AGENTS.md) e [skills/gitflow/SKILL.md](skills/gitflow/SKILL.md).
+- **Regras de Negócio**: Consulte [AGENTS.md](AGENTS.md) para detalhes das regras oficiais do jogo (recursos, turnos, territórios e bases).
+
+---
+
+## 🤝 Como Contribuir
+
+Contribuições da comunidade são muito bem-vindas! Este projeto segue as melhores práticas de código aberto:
+
+1. **Guia de Contribuição**: Leia nosso [CONTRIBUTING.md](CONTRIBUTING.md) para entender detalhadamente o fluxo de desenvolvimento, fork, branches e padrões de código.
+2. **Código de Conduta**: Adotamos o [Contributor Covenant](CODE_OF_CONDUCT.md). Por favor, garanta um ambiente respeitoso e acolhedor para todos.
+3. **Fluxo Git (Gitflow)**:
+   - Crie uma branch específica a partir da `main`: `feat/minha-feature` ou `fix/meu-ajuste`.
+   - Utilize commits semânticos no padrão [Conventional Commits](https://www.conventionalcommits.org/).
+   - Mantenha sua branch sincronizada via `git rebase main`.
+4. **Validação e Qualidade**:
+   - Execute `make check` (ou `flutter analyze` e `flutter test`) antes de submeter alterações.
+   - Todo PR deve passar com **0 warnings e 0 errors** e incluir cobertura de testes adequada.
+5. **Issues e Pull Requests**: Utilize nossos templates padronizados para relatar bugs, sugerir melhorias ou abrir PRs.

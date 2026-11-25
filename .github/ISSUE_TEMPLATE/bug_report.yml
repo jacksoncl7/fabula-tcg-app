@@ -1,0 +1,54 @@
+name: Relato de Bug
+description: Crie um relatório para nos ajudar a identificar e corrigir um problema
+title: "fix: [breve descrição do bug]"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por dedicar seu tempo para relatar um bug! Por favor, forneça o máximo de informações possível.
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição do Bug
+      description: Uma explicação clara e concisa do que é o bug.
+      placeholder: Ex: Ao passar o turno, os recursos de manobra não estão sendo mantidos para a reação.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Passos para Reproduzir
+      description: Passos exatos para reproduzir o problema.
+      value: |
+        1. Ir para a tela '...'
+        2. Clicar em '...'
+        3. Avançar para o próximo turno
+        4. Notar que o recurso foi zerado indevidamente
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportamento Esperado
+      description: O que você esperava que acontecesse segundo as regras de Fábula TCG.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Capturas de Tela ou Gravações
+      description: Se aplicável, adicione capturas de tela para ajudar a ilustrar o problema.
+    validations:
+      required: false
+  - type: textarea
+    id: environment
+    attributes:
+      label: Ambiente de Execução
+      description: Informações sobre dispositivo, SO e versão.
+      value: |
+        - Dispositivo / Emulador: [ex: Pixel 7 / iPhone 14]
+        - Sistema Operacional: [ex: Android 14 / iOS 17 / Web]
+        - Versão do Flutter / Build: [ex: 3.22.x]
+    validations:
+      required: true
