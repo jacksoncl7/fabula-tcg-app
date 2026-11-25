@@ -76,5 +76,4 @@ coverage/
 # Desktop and Web platforms (Mobile-only companion app)
 linux/
 macos/
-web/
 windows/
